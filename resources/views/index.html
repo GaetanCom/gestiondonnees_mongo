@@ -1,0 +1,70 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}{% endblock %}
+
+{% block style %}
+  <style>
+    #map {
+      width: 1000px;
+      height: 1000px;
+    }
+  </style>
+{% endblock %}
+
+
+{% block content %}
+
+  <div class="container">
+
+    <h1>{{ title }}</h1>
+
+    <div id="map"></div>
+    
+
+  </div>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+  let mymap = L.map('map').setView([48.692054, 6.184416999999939], 13);
+
+  let iconParking = L.icon({
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Parking_icon.svg',
+    iconSize: [20, 20],
+  })
+
+  $.get("/api/parking", function(data) {
+
+    data.parkings.forEach(element => {
+      let lat = element.position.lat;
+      let long = element.position.long;
+
+      let marker = L.marker(
+        [lat, long], 
+        {icon: iconParking}
+      ).addTo(mymap);
+      
+      marker.bindPopup(
+        '<h4>' + element.name + "</h4> \
+        places : " + element.nbStands 
+      );
+
+    });
+
+  });
+
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1
+  }).addTo(mymap);
+</script>
+
+{% endblock %}
