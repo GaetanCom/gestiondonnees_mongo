@@ -1,0 +1,13 @@
+lien github :
+
+https://github.com/GaetanCom/gestiondonnees_mongo
+
+=====================================================================
+
+Pour lancer le projet :
+
+Dans un premier terminal :
+- docker-compose up 
+
+Dans un second terminal :
+- npm run dev
