@@ -29,8 +29,10 @@
 {% block script %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+<script src="//maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>
 
 <script>
+
   let mymap = L.map('map').setView([48.692054, 6.184416999999939], 13);
 
   let iconParking = L.icon({
@@ -52,11 +54,19 @@
         [lat, long], 
         {icon: iconParking}
       ).addTo(mymap);
+
+      let layer = omnivore.kml('/api/stopstan');
       
       marker.bindPopup(
         '<h4>' + element.name + "</h4> \
         places : " + element.nbStands 
-      );
+      ).on('click', () => {
+        layer.addTo(mymap);
+      })
+      .on('popupclose', () => {
+        layer.remove();
+      })
+      .addTo(mymap);
     });
 
   });
@@ -70,18 +80,26 @@
         [lat, long], 
         {icon: iconParkingVelo}
       ).addTo(mymap);
+
+      let layer = omnivore.kml('/api/stopstan');
       
       markerVelo.bindPopup(
         '<h4>' + element.name + "</h4> \
         <p> velos dispo : " + element.nbVeloAvailable + "</p> \
         <p> place dispo : " + element.nbStandsAvailable + "</p>"
-      );
+      ).on('click', () => {
+        layer.addTo(mymap);
+      })
+      .on('popupclose', () => {
+        layer.remove();
+      })
+      .addTo(mymap);
     });
 
   });
 
   omnivore.kml('/api/park').addTo(mymap);
-  // omnivore.kml('/api/stopstan').addTo(mymap);
+  
 
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
