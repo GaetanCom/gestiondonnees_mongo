@@ -7,6 +7,7 @@ let url = "mongodb://localhost:27017/nancymongodb";
 
 const Parking = require('../models/parkingSchema');
 const Garden = require('../models/gardenSchema');
+const Velo = require('../models/veloSchema');
 
 exports.addParking = async(req, res, next) => {
     
@@ -15,9 +16,8 @@ exports.addParking = async(req, res, next) => {
         // Create database (named 'nancydb')
         mongoose.connect(url, { useNewUrlParser: true }, function(err, db) {
             if (err) throw err;
-            console.log("Database nancydb created!");
+            console.log("Database nancydb created! for Parking");
 
-            // console.log("On y est");
             //Delete all previously data if exist
             Parking.deleteMany({}, function(err){
                 if (err) return handleError(err);
@@ -49,7 +49,7 @@ exports.addPark = async(req, res, next) => {
 
     mongoose.connect(url, { useNewUrlParser: true }, function(err, db) {
         if (err) throw err;
-        console.log("Database nancydb created!");
+        console.log("Database nancydb created! for Parks");
 
         // console.log("On y est");
         //Delete all previously data if exist
@@ -58,6 +58,43 @@ exports.addPark = async(req, res, next) => {
         });
 
         
+    });
+
+}
+
+exports.addVelo = async(req, res, next) => {
+    
+    getJSON('https://api.jcdecaux.com/vls/v3/stations?contract=nancy&apiKey=5b9e0c425c23cdeac1cb9ea614c6090f1db01e19', function(error, response){
+        
+        // Create database (named 'nancydb')
+        mongoose.connect(url, { useNewUrlParser: true }, function(err, db) {
+            if (err) throw err;
+            console.log("Database nancydb created for Velo!");
+
+            //Delete all previously data if exist
+            Velo.deleteMany({}, function(err){
+                if (err) return handleError(err);
+            });
+
+            // Inserting all data
+            // console.log(response.length);
+            let i = 0;
+            for(i; i<response.length; i++){
+
+
+                let velo = new Velo({
+                    name: response[i].name,
+                    nbStandsAvailable: response[i].totalStands.availabilities.stands,
+                    nbVeloAvailable: response[i].totalStands.availabilities.bikes,
+                    position: {
+                        lat: response[i].position.latitude,
+                        long: response[i].position.longitude,
+                    }
+                });
+
+                velo.save();
+            }
+        });
     });
 
 }

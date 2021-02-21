@@ -16,6 +16,7 @@ const addData = () => {
 
     addDatas.addParking();
     addDatas.addPark();
+    addDatas.addVelo();
 
 }
 
