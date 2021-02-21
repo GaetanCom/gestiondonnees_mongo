@@ -28,6 +28,7 @@
 
 {% block script %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
 
 <script>
   let mymap = L.map('map').setView([48.692054, 6.184416999999939], 13);
@@ -38,7 +39,6 @@
   })
 
   $.get("/api/parking", function(data) {
-
     data.parkings.forEach(element => {
       let lat = element.position.lat;
       let long = element.position.long;
@@ -52,10 +52,24 @@
         '<h4>' + element.name + "</h4> \
         places : " + element.nbStands 
       );
-
     });
 
   });
+
+  omnivore.kml('/api/park')
+    .on('ready', function(layer) {
+      this.eachLayer(function(marker) {
+        let marker = L.marker(
+          [lat, long]
+        ).addTo(mymap);
+
+        marker.bindPopup(
+          "test"
+        )
+
+      })
+    })
+    .addTo(mymap);
 
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,

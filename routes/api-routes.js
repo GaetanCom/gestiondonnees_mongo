@@ -5,5 +5,7 @@ const apiControllers = require('../controllers/api-controllers');
 
 router.get('/parking', apiControllers.parking);
 
+router.get('/park', apiControllers.park)
+
 
 module.exports = router;
