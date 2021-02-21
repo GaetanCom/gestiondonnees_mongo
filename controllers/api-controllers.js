@@ -29,6 +29,14 @@ exports.park = async (req, res, next) => {
 
 }
 
+exports.stopStan = async (req, res, next) => {
+
+  const file = __dirname + "/../resources/data/stopStan.kml";
+  // res.send(convertedWithStyles);
+  res.download(file);
+
+}
+
 exports.parkingVelo = async (req, res, next) => {
   let parkingsvelos;
 
@@ -45,3 +53,4 @@ exports.parkingVelo = async (req, res, next) => {
   res.json({VeloSchema: parkingsvelos.map(parkingvelo => parkingvelo.toObject({getters: true})) });
 
 }
+

@@ -14,9 +14,12 @@ let url = "mongodb://localhost:27017/nancymongodb";
 
 const addData = () => {
 
-    addDatas.addParking();
     addDatas.addPark();
+    addDatas.addParking();
     addDatas.addVelo();
+    addDatas.addStopStan();
+
+    addDatas.addEnrichment();
 
 }
 

@@ -8,6 +8,8 @@ let url = "mongodb://localhost:27017/nancymongodb";
 const Parking = require('../models/parkingSchema');
 const Garden = require('../models/gardenSchema');
 const Velo = require('../models/veloSchema');
+const Stop = require('../models/transportStopSchema');
+const Enrichment = require('../models/enrichments');
 
 exports.addParking = async(req, res, next) => {
     
@@ -62,6 +64,21 @@ exports.addPark = async(req, res, next) => {
 
 }
 
+exports.addStopStan = async(req, res, next) => {
+
+    mongoose.connect(url, { useNewUrlParser: true }, function(err, db) {
+        if (err) throw err;
+        console.log("Database nancydb created! for Stop STAN");
+
+        Stop.deleteMany({}, function(err){
+            if (err) return handleError(err);
+        });
+
+        
+    });
+
+}
+
 exports.addVelo = async(req, res, next) => {
     
     getJSON('https://api.jcdecaux.com/vls/v3/stations?contract=nancy&apiKey=5b9e0c425c23cdeac1cb9ea614c6090f1db01e19', function(error, response){
@@ -69,7 +86,7 @@ exports.addVelo = async(req, res, next) => {
         // Create database (named 'nancydb')
         mongoose.connect(url, { useNewUrlParser: true }, function(err, db) {
             if (err) throw err;
-            console.log("Database nancydb created for Velo!");
+            console.log("Database nancydb created! for Velo!");
 
             //Delete all previously data if exist
             Velo.deleteMany({}, function(err){
@@ -96,5 +113,11 @@ exports.addVelo = async(req, res, next) => {
             }
         });
     });
+
+}
+
+exports.addEnrichment = async(req, res, next) => {
+
+
 
 }

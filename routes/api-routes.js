@@ -7,7 +7,9 @@ router.get('/parking', apiControllers.parking);
 
 router.get('/park', apiControllers.park);
 
-router.get('/parkingvelos', apiControllers.parkingVelo)
+router.get('/parkingvelos', apiControllers.parkingVelo);
+
+router.get('/stopstan', apiControllers.stopStan);
 
 
 module.exports = router;
