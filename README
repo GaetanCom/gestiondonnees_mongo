@@ -1,0 +1,7 @@
+Pour lancer le projet :
+
+Dans un premier terminal :
+- docker-compose up 
+
+Dans un second terminal :
+- npm run dev
