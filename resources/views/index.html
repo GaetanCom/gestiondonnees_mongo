@@ -56,15 +56,20 @@
       ).addTo(mymap);
 
       let layer = omnivore.kml('/api/stopstan');
+      let circle = L.circle([lat, long], 200 ,{
+        color: '#FF0000'
+      });
       
       marker.bindPopup(
         '<h4>' + element.name + "</h4> \
         places : " + element.nbStands 
       ).on('click', () => {
         layer.addTo(mymap);
+        circle.addTo(mymap);
       })
       .on('popupclose', () => {
         layer.remove();
+        circle.remove();
       })
       .addTo(mymap);
     });
@@ -82,16 +87,20 @@
       ).addTo(mymap);
 
       let layer = omnivore.kml('/api/stopstan');
-      
+      let circle = L.circle([lat, long], 200 ,{
+        color: '#FF0000'
+      });
       markerVelo.bindPopup(
         '<h4>' + element.name + "</h4> \
         <p> velos dispo : " + element.nbVeloAvailable + "</p> \
         <p> place dispo : " + element.nbStandsAvailable + "</p>"
       ).on('click', () => {
         layer.addTo(mymap);
+        circle.addTo(mymap);
       })
       .on('popupclose', () => {
         layer.remove();
+        circle.remove();
       })
       .addTo(mymap);
     });
